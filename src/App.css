@@ -42,7 +42,7 @@
 }
 
 form {
-  width: 1170;
+  width: 500;
   margin: auto;
   display: flex;
   gap: 20px;
@@ -57,7 +57,7 @@ form button {
 }
 
 .outerDiv {
-  width: 1170px;
+  width: 500px;
   margin: auto;
 }
 
