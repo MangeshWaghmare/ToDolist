@@ -4,33 +4,64 @@ import viteLogo from "/vite.svg";
 import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0);
+  let [todolist, settodolist] = useState([]);
 
+  let saveToDoList = (event) => {
+    let todoname = event.target.todoname.value;
+    if (!todolist.includes(todoname)) {
+      let finalToDoList = [...todolist, todoname];
+      settodolist(finalToDoList);
+    } else {
+      alert("ToDo Name Already Exist...");
+    }
+    event.preventDefault();
+  };
+
+  let list = todolist.map((value, index) => {
+    return (
+      <ToDoListItems
+        value={value}
+        key={index}
+        indexNumber={index}
+        todolist={todolist}
+        settodolist={settodolist}
+      />
+    );
+  });
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className="App">
+        <h1>To Do List For Your Daily Targets</h1>
+        <form onSubmit={saveToDoList}>
+          <input type="text" name="todoname"></input> <button>Save</button>
+        </form>
+
+        <div className="outerDiv">
+          <ul>{list}</ul>
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <h1>To Do List</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   );
 }
 
 export default App;
+
+function ToDoListItems({ value, indexNumber, todolist, settodolist }) {
+  let [status, setstatus] = useState(false);
+
+  let deleteRow = () => {
+    let finalData = todolist.filter((v, i) => i != indexNumber);
+    settodolist(finalData);
+  };
+
+  let checkStatus = () => {
+    setstatus(!status);
+  };
+
+  return (
+    <li className={status ? "completetodo" : ""} onClick={checkStatus}>
+      {indexNumber + 1 + "."} {value}
+      <span onClick={deleteRow}>&times;</span>
+    </li>
+  );
+}
